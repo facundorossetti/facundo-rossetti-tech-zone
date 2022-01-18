@@ -1,6 +1,10 @@
 <template>
   <v-app>
     <v-main>
+      <div class="navigation-container">
+        <icon name="favicon" :heigth="48" :width="126"></icon>
+        <aeroplay-drop-down></aeroplay-drop-down>
+      </div>
       <v-container>
         <Nuxt />
       </v-container>
@@ -16,3 +20,14 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.navigation-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 auto;
+  max-width: 1464px;
+  height: 128px;
+}
+</style>

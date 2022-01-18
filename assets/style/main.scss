@@ -1,0 +1,19 @@
+@import "./typography.scss";
+
+/* montserrat-regular - latin */
+@font-face {
+    font-family: 'Montserrat';
+    font-style: normal;
+    src: url('../style/fonts/montserrat-v21-latin-regular.eot'); /* IE9 Compat Modes */
+    src: local(''),
+         url('../style/fonts/montserrat-v21-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('../style/fonts/montserrat-v21-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+         url('../style/fonts/montserrat-v21-latin-regular.woff') format('woff'), /* Modern Browsers */
+         url('../style/fonts/montserrat-v21-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+         url('../style/fonts/montserrat-v21-latin-regular.svg#Montserrat') format('svg'); /* Legacy iOS */
+}
+
+#app {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 400;
+}
