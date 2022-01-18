@@ -6,39 +6,33 @@
             >
             <div>
                 <icon :heigth="32" :width="32"></icon>
-                <span class="text brand-default-color">10.000</span>
+                <span class="text brand-default-color">{{ points }}</span>
             </div>
             <div>
                 <v-icon class="chevron-down">{{ menu ? "mdi-chevron-down" : "mdi-chevron-up" }}</v-icon>
             </div>
         </div>
-        <div v-show="menu" class="menu-wrapper">
-            <div class="menu-header text-l1-default">
-                Add Balance
-            </div>
-            <div class="menu-content">
-                <div class="aerocard"></div>
-                <div class="toggle-wrapper">
-                    <v-btn-toggle v-model="toggle_button" borderless mandatory>
-                        <v-btn class="toggle-button" :ripple="false">
-                            1000
-                        </v-btn >
-                        <v-btn class="toggle-button" :ripple="false">
-                            5000
-                        </v-btn>
-                        <v-btn class="toggle-button" :ripple="false">
-                            7500
-                        </v-btn>
-                    </v-btn-toggle>
+        
+        <transition name="fade">
+            <div v-show="menu" class="menu-wrapper">
+                <div class="menu-header text-l1-default">
+                    Add Balance
                 </div>
-                <div>
-                    <v-btn class="add-points-btn" :ripple="false" >
-                        <icon :heigth="24" :width="24"></icon>
-                        <span class="__text text-l1-default">Add Points</span>
-                    </v-btn>
+                <div class="menu-content">
+                    <div class="aerocard"></div>
+                    <div class="toggle-wrapper">
+                        <e-button-toggle :btns="btns" @select="changePoints"></e-button-toggle>
+                    </div>
+                    <div>
+                        <v-btn class="add-points-btn" :ripple="false" @click="addPoints">
+                            <icon :heigth="24" :width="24"></icon>
+                            <span class="__text text-l1-default">Add Points</span>
+                        </v-btn>
+                    </div>
                 </div>
             </div>
-        </div>
+        </transition>
+        
     </div>
 </template>
 
@@ -49,12 +43,48 @@ export default {
         return {
             toggle_button: 1,
             menu: false,
+            pointsToAdd: 5000,
+            btns: [1000, 5000, 7500],
+            headers: {
+                'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWU1NzBiNGEzMGFiYjAwMWE5NDExY2QiLCJpYXQiOjE2NDI0MjY1NDh9.H-F16vO3pn1zo5exccyNIvsA74sgV87egCdmUUUKNcU'
+            }
         }
     },
+    computed: {
+        points() {
+            return this.$store.state.user.points;
+        }
+    },
+    async beforeMount() {
+        await this.$axios
+        .get('https://coding-challenge-api.aerolab.co/user/me', {headers: this.headers})
+        .then(response => {
+            this.$store.commit('user/setPoints', response.data.points);
+        })
+        .catch(error => console.log(error.response))
+    },
+    methods: {
+        changePoints(e) {
+            this.pointsToAdd = e;
+        },
+        async addPoints() {
+            await this.$axios
+                .post('https://coding-challenge-api.aerolab.co/user/points', {'amount': this.pointsToAdd},
+                { headers: this.headers })
+                .then(response => this.$store.commit('user/setPoints', response.data['New Points']))
+                .catch(error => error.response.data);
+        },
+    }
 }
 </script>
 
 <style lang="scss" scoped>
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0
+}
 .button {
     cursor: pointer;
     display: flex;

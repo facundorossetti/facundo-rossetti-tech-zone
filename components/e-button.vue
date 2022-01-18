@@ -1,8 +1,9 @@
 <template>
-    <v-btn class="btn" :ripple="false" :style="style">
+    <v-btn :class="disabled ? 'btnDisabled' : 'btn'" :ripple="false" :style="style" @click="$emit('click')">
         <icon v-show="showPrependIcon" :heigth="24" :width="24"></icon>
-        <span class="__text text-l1-default">{{text}}</span>
+        <span class="__text text-l1-default">{{ text }}</span>
         <icon v-show="showApendIcon" :heigth="24" :width="24"></icon>
+        <span v-show="productValue" class="__text text-l1-default">{{ productValue }}</span>
     </v-btn>
 </template>
 
@@ -14,11 +15,19 @@ export default {
             type: String,
             default: "",
         },
+        productValue: {
+            type: Number,
+            default: 0,
+        },
         showPrependIcon: {
             type: Boolean,
             default: false,
         },
         showApendIcon: {
+            type: Boolean,
+            default: false,
+        },
+        disabled: {
             type: Boolean,
             default: false,
         },
@@ -56,7 +65,7 @@ export default {
 <style lang="scss" scoped>
 .btn {
     height: 51px;
-    text-transform: uppercase;
+    text-transform: none;
     border-radius: 12px;
     background: $color-brand-default !important;
     box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.05);
@@ -64,6 +73,22 @@ export default {
         padding-left: 8px;
         padding-right: 8px;
         color: $color-neutrals-0 !important;
+    }
+}
+.btnDisabled {
+    cursor: default;
+    height: 51px;
+    text-transform: none;
+    border-radius: 12px;
+    background: $color-neutrals-200 !important;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.05);
+    .__text {
+        padding-left: 8px;
+        padding-right: 8px;
+        color: $color-neutrals-600 !important;
+    }
+    &::before {
+        background-color: transparent !important;
     }
 }
 </style>

@@ -1,15 +1,15 @@
 <template>
-    <div class="card-container" :style="style">
+    <div class="card-container">
         <div class="card-image-container">
             <img src="../assets/illustrations/walkthroug-1-desktop.png" alt="">
         </div>
         <div class="card-footer mt-auto">
             <div class="d-flex">
                 <icon :heigth="32" :width="32"></icon>
-                <p class="title-l3-default brand-default-color-text pl-4">1—browse</p>
+                <p class="title-l3-default brand-default-color-text pl-4">{{ title }}</p>
             </div>
             <div class="text-l1-default neutrals-600-color-text">
-                <p>Browse our tech catalog with more than 20 top tech products</p>
+                <p>{{ description }}</p>
             </div>
         </div>
     </div>
@@ -18,6 +18,16 @@
 <script>
 export default {
     name: "ECard",
+    props: {
+        title: {
+            type: String,
+            default: null
+        },
+        description: {
+            type: String,
+            default: null
+        }
+    }
 }
 </script>
 
@@ -35,7 +45,7 @@ export default {
 .card-image-container {
     height: 498px;
     width: 508px;
-    background: $color-brand-default;
+    background: $color-illustration-bg;
     border-radius: 24px 24px 0px 0px;
     img {
         height: 100%;
