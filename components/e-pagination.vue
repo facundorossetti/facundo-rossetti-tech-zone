@@ -7,7 +7,7 @@
             <span class="text-l1-default neutrals-600-color-text">Page</span>
             <span class="text-l1-default brand-default-color-text pl-2">{{currentPage}} of {{maxPages}}</span>
         </div>
-        <button class="pager" @click="nextPage">
+        <button :class="currentPage === 2 ? 'disabled' : 'pager'" @click="nextPage">
             <v-icon class="chevron-right" color="#8FA3BF">mdi-chevron-right</v-icon>
         </button>
     </div>

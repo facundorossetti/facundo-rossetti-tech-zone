@@ -23,6 +23,7 @@ export default {
 
 <style lang="scss" scoped>
 .navigation-container {
+  z-index: 99;
   display: flex;
   align-items: center;
   justify-content: space-between;

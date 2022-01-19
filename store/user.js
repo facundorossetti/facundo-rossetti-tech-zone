@@ -1,5 +1,6 @@
 export const state = () => ({
     points: 0,
+    history: [],
 });
 
 export const mutations = {

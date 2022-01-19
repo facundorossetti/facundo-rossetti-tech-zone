@@ -1,10 +1,9 @@
 <template>
-    <div class="toggle-wrapper">
-        <v-btn-toggle :value="defaultPosition" borderless mandatory>
+    <div>
+        <v-btn-toggle class="toggle-container" :value="defaultPosition" borderless mandatory>
             <v-btn 
-                v-for="(btn, index) in btns" :key="index" 
-                class="toggle-button" 
-                :ripple="false"
+                v-for="(btn, index) in btns" :key="index"
+                class="toggle-button"
                 @click="btnClicked(btn)"
                 >{{ btn }}
             </v-btn >
@@ -37,9 +36,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.toggle-container {
+    width: 70%;
+}
 .toggle-button {
     width: 45%;
-    height: 35px;
+    max-height: 43px;
+    min-height: 35px;
     border-radius: 12px !important;
     background-color: #E6F0FF !important;
     &:nth-child(2) {

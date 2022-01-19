@@ -1,5 +1,5 @@
 <template>
-  <img src="../assets/icons/favicon.svg" :style="style" />
+  <img src="../assets/sprite/svg/icons/favicon.svg" :style="style" />
 </template>
 
 <script>

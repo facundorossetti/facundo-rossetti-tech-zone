@@ -28,7 +28,7 @@ export default {
     props: {
         label: {
             type: String,
-            default: "label"
+            default: ""
         },
         items: {
             type: Array,
@@ -70,6 +70,7 @@ export default {
     .menu {
         position: absolute;
         display: flex;
+        overflow-y: auto;
         z-index: 10;
         flex-direction: column;
         margin-top: 8px;
@@ -92,5 +93,4 @@ export default {
         }
     }
 }
-
 </style>

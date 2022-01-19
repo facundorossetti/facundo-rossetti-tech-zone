@@ -1,18 +1,14 @@
 <template>
     <div class="component-container">
-        <div
-            class="button"
-            @click="menu = !menu"
-            >
+        <div class="button" @click="menu = !menu">
             <div>
                 <icon :heigth="32" :width="32"></icon>
-                <span class="text brand-default-color">{{ points }}</span>
+                <span class="text pl-1 text-l1-default brand-default-color-text">{{ points }}</span>
             </div>
             <div>
                 <v-icon class="chevron-down">{{ menu ? "mdi-chevron-down" : "mdi-chevron-up" }}</v-icon>
             </div>
         </div>
-        
         <transition name="fade">
             <div v-show="menu" class="menu-wrapper">
                 <div class="menu-header text-l1-default">
@@ -32,7 +28,6 @@
                 </div>
             </div>
         </transition>
-        
     </div>
 </template>
 
@@ -52,8 +47,8 @@ export default {
     },
     computed: {
         points() {
-            return this.$store.state.user.points;
-        }
+            return this.numberWithCommas(this.$store.state.user.points);
+        },
     },
     async beforeMount() {
         await this.$axios
@@ -61,7 +56,7 @@ export default {
         .then(response => {
             this.$store.commit('user/setPoints', response.data.points);
         })
-        .catch(error => console.log(error.response))
+        .catch(error => error.response.data)
     },
     methods: {
         changePoints(e) {
@@ -73,6 +68,9 @@ export default {
                 { headers: this.headers })
                 .then(response => this.$store.commit('user/setPoints', response.data['New Points']))
                 .catch(error => error.response.data);
+        },
+        numberWithCommas(number) {
+            return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         },
     }
 }
@@ -98,13 +96,6 @@ export default {
     div {
         display: flex;
         align-items: center;
-    }
-    .text {
-        font-style: normal;
-        font-weight: 600;
-        font-size: 18px;
-        line-height: 150%;
-        padding-left: 3px;
     }
 }
 .chevron-down {

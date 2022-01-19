@@ -1,7 +1,7 @@
 <template>
     <div class="card-container">
         <div class="card-image-container">
-            <img src="../assets/illustrations/walkthroug-1-desktop.png" alt="">
+            <img :src="require(`../assets/illustrations/${image}.png`)" alt="">
         </div>
         <div class="card-footer mt-auto">
             <div class="d-flex">
@@ -26,7 +26,11 @@ export default {
         description: {
             type: String,
             default: null
-        }
+        },
+        image: {
+            type: String,
+            default: null
+        } 
     }
 }
 </script>

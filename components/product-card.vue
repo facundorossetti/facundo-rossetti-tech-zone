@@ -15,7 +15,7 @@
             :show-apend-icon="showApendIcon" 
             :product-value="productValue"
             @click="$emit('click')">
-            </e-button>
+        </e-button>
     </div>
 </template>
 

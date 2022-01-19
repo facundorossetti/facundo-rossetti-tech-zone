@@ -1,12 +1,18 @@
 <template>
   <div>
-    <v-row style="width: 1464px; margin: 0 auto;">
+    <v-row style="max-width: 1464px; margin: 0 auto;">
       <v-col>
         <p class="text-l1-allcaps-24ls neutrals-600-color-text">EXPLORE THE</p>
         <p class="heading-l1-default brand-default-color-text">Tech</p>
         <p class="heading-l1-default neutrals-900-color-text">Zone</p>
         <p class="text-l1-default neutrals-600-color-text">Here you'll be able to exchange all of your hard-earned Aeropoints and exchange them for cool tech.</p>
-        <e-button text="view all products" show-apend-icon width="318px" height="80px" border-radius="24px"></e-button>
+        <e-button 
+          text="view all products" 
+          show-apend-icon width="318px" 
+          height="80px" 
+          border-radius="24px"
+          @click="goto('products')"
+        ></e-button>
       </v-col>
       <v-col>
         <div class="image-container">
@@ -14,19 +20,22 @@
         </div>
       </v-col>
     </v-row>
-    <v-row style="width: 100%; margin: 0 auto;">
+    <v-row no-gutters>
       <div class="midpage-container">
-        <e-card 
-          title="1 — browse" 
+        <e-card
+          image='walkthroug-1-desktop'
+          title="1 — browse"
           description="Browse our tech catalog with more than 20 top tech products" 
           class="card1"
         ></e-card>
-        <e-card 
+        <e-card
+          image='walkthroug-2-desktop'
           title="2 — choose" 
           description="Exchange your hard earned AeroPoints for the item you want" 
           class="card2"
         ></e-card>
-        <e-card 
+        <e-card
+          image='walkthroug-3-desktop'
           title="3 — enjoy!" 
           description="All done, you can relax! We’ll take care of delivery of your tech item!" 
           class="card3"
@@ -34,7 +43,7 @@
       </div>
     </v-row>
     <v-row>
-      <div class="products-section-container">
+      <div id="products" class="products-section-container">
         <div class="tittle mb-10">
           <p class="title-l2-default">tech</p>
           <p class="title-l2-default neutrals-900-color-text pl-5">products</p>
@@ -42,37 +51,51 @@
         <div class="options">
           <div class="d-flex align-center">
             <span class="pr-4">Filter by:</span>
-            <select-filter label="All Products" :items="items"></select-filter>
+            <select-filter :label="categories[0]" :items="categories" @select="selectFilter"></select-filter>
           </div>
           <v-divider class="mx-10" vertical></v-divider>
           <div class="d-flex align-center">
             <span class="pr-4">Sort by:</span>
-            <e-button-toggle :btns="btns" :default-position="0"></e-button-toggle>
+            <e-button-toggle :btns="btns" :default-position="0" @select="sortBy" ></e-button-toggle>
           </div>
-          <e-pagination class="ml-auto" :max-pages="2"></e-pagination>
+          <e-pagination
+            class="ml-auto"
+            :max-pages="filteredProducts.length < 16 ? 1 : 2"
+            @change="changePage"
+          ></e-pagination>
         </div>
-        <v-row class="products-container">
-          <v-col v-for="(product, index) in products" :key="index" cols="12" lg="3" class="pb-16">
+        <v-row no-gutters class="products-container">
+          <div
+            v-for="(product, index) in (page === 1 ? filteredProducts.slice(0, 16) : filteredProducts.slice(16, 32))"
+            :key="index"
+            class="pb-16"
+          >
             <product-card
+              :disabled-btn="product.cost > $store.state.user.points"
               :show-apend-icon="showIcon"
               :product-value="product.cost"
               :name="product.name"
               :type="product.category"
-              :text="text"
+              :text="product.cost > $store.state.user.points ? insuficientText : text"
               :img-url="product.img.url"
               @click="redeemProduct(product)"
             ></product-card>
-          </v-col>
+          </div>
         </v-row>
         <div class="pagination-footer pt-16">
           <div class="wrapper d-flex align-center justify-space-between">
             <div class="text d-flex">
-              <span class="text-l1-default brand-default-color-text pr-2">{{products.length}} of {{products.length}}</span>
+              <span class="text-l1-default brand-default-color-text pr-2">{{ filteredProducts.length > 16 ? 16: filteredProducts.length}} of {{ products.length }}</span>
               <span class="text-l1-default neutrals-600-color-text">products</span>
             </div>
-            <e-pagination :max-pages="2"></e-pagination>
+            <e-pagination :max-pages="filteredProducts.length < 16 ? 1 : 2" @change="changePage"></e-pagination>
           </div>
         </div>
+        <e-snackbar
+          v-for="(e, i) in snackbar" :key="i"
+          :product-name="snackbarProductName(e)"
+          @clickClose="closeSnackbar(e)"
+        ></e-snackbar>
       </div>
     </v-row>
   </div>
@@ -83,21 +106,37 @@ export default {
   name: 'IndexPage',
   data() {
     return {
-      items: ["All Products", "Gaming", "Audio", "Smart Home", "Monitors & TV"],
+      page: 1,
+      categories: ["All Products"],
       btns: ["Most Recent", "Lowest Price", "Highest Price"],
       showIcon: true,
       text: "Redeem for",
+      insuficientText: "You need",
       productValue: "12.500",
       headers: {
           'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWU1NzBiNGEzMGFiYjAwMWE5NDExY2QiLCJpYXQiOjE2NDI0MjY1NDh9.H-F16vO3pn1zo5exccyNIvsA74sgV87egCdmUUUKNcU'
       },
-      products: []
+      products: [],
+      filter: "All Products",
+      snackbar: [],
     }
+  },
+  computed: {
+    filteredProducts() {
+      if(this.filter !== "All Products") {
+        return this.products.filter((e) => e.category === this.filter);
+      } else {
+        return this.products;
+      }
+    },
   },
   async beforeMount() {
     this.products = (await this.$axios.get('https://coding-challenge-api.aerolab.co/products', 
       { headers: this.headers })).data
-    console.log(this.products)
+    const array = [];
+    this.products.forEach((e) => array.push(e.category));
+    const newArray = [...new Set(array)];
+    newArray.forEach((e)=> this.categories.push(e));
   },
   methods: {
     async redeemProduct(product) {
@@ -106,10 +145,33 @@ export default {
           { headers: this.headers })
           .then((response) => {
             this.$store.commit('user/removePoints', product.cost);
-            console.log(response.data.message);
+            this.snackbar.push(product.name);
           })
           .catch(error => error.response.data);
-    }
+    },
+    selectFilter(category) {
+      this.filter = category;
+    },
+    closeSnackbar(e) {
+      this.snackbar = this.snackbar.filter((element) => element !== e);
+    },
+    snackbarProductName(e) {
+      return this.snackbar.find((element) => element === e);
+    },
+    sortBy(e) {
+      if(e==="Lowest Price") {
+        this.products.sort((a, b) => parseFloat(a.cost) - parseFloat(b.cost));
+      }
+      if(e==="Highest Price") {
+        this.products.sort((a, b) => parseFloat(b.cost) - parseFloat(a.cost));
+      }
+    },
+    changePage(e) {
+      this.page = e;
+    },
+    goto(element) {
+        this.$router.replace({ name: this.$route.name, hash: `#${element}` });
+    },
   },
 }
 </script>
@@ -164,14 +226,16 @@ export default {
     padding-bottom: 66px;
   }
   .products-container {
+    width: 100%;
     display: flex;
+    justify-content: space-around;
     flex-wrap: wrap;
   }
   .pagination-footer {
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: end;
+    justify-content: flex-end;
     margin-bottom: 250px;
     .wrapper {
       width: 55%;
