@@ -1,8 +1,13 @@
 <template>
     <v-btn :class="disabled ? 'btnDisabled' : 'btn'" :ripple="false" :style="style" @click="$emit('click')">
-        <icon v-show="showPrependIcon" :heigth="24" :width="24"></icon>
+        <div v-if="prependSvgIcon">
+            <img class="icon" :src="require(`../assets/sprite/svg/icons/${prependSvgIcon}.svg`)" alt="">
+        </div>
         <span class="__text text-l1-default">{{ text }}</span>
-        <icon v-show="showApendIcon" :heigth="24" :width="24"></icon>
+        <v-icon v-show="apendIcon" :heigth="24" :width="24" :color="apendIconColor">{{ apendIcon }}</v-icon>
+        <div v-if="apendSvgIcon">
+            <img class="icon" :src="require(`../assets/sprite/svg/icons/${apendSvgIcon}.svg`)" alt="">
+        </div>
         <span v-show="productValue" class="__text text-l1-default">{{ productValue }}</span>
     </v-btn>
 </template>
@@ -16,16 +21,24 @@ export default {
             default: "",
         },
         productValue: {
-            type: Number,
-            default: 0,
+            type: String,
+            default: null,
         },
-        showPrependIcon: {
-            type: Boolean,
-            default: false,
+        prependSvgIcon: {
+            type: String,
+            default: null,
         },
-        showApendIcon: {
-            type: Boolean,
-            default: false,
+        apendIcon: {
+            type: String,
+            default: null,
+        },
+        apendSvgIcon: {
+            type: String,
+            default: null,
+        },
+        apendIconColor: {
+            type: String,
+            default: null,
         },
         disabled: {
             type: Boolean,
@@ -74,6 +87,9 @@ export default {
         padding-right: 8px;
         color: $color-neutrals-0 !important;
     }
+    &:hover {
+        background: $color-brand-hover !important;
+    }
 }
 .btnDisabled {
     cursor: default;
@@ -90,5 +106,10 @@ export default {
     &::before {
         background-color: transparent !important;
     }
+}
+.icon {
+    margin-top: 2px;
+    width: 24px;
+    height: 24px;
 }
 </style>

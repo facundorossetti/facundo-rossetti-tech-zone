@@ -3,10 +3,12 @@
         <div class="card-image-container">
             <img :src="require(`../assets/illustrations/${image}.png`)" alt="">
         </div>
-        <div class="card-footer mt-auto">
-            <div class="d-flex">
-                <icon :heigth="32" :width="32"></icon>
-                <p class="title-l3-default brand-default-color-text pl-4">{{ title }}</p>
+        <div class="card-footer">
+            <div class="pb-3 d-flex align-center">
+                <div class="icon-container">
+                    <img class="icon" :src="require(`../assets/sprite/svg/icons/${iconName}.svg`)">
+                </div>
+                <span class="title-l3-default brand-default-color-text pl-4">{{ title }}</span>
             </div>
             <div class="text-l1-default neutrals-600-color-text">
                 <p>{{ description }}</p>
@@ -30,6 +32,10 @@ export default {
         image: {
             type: String,
             default: null
+        },
+        iconName: {
+            type: String,
+            default: 'aeropay-1'
         } 
     }
 }
@@ -59,9 +65,22 @@ export default {
 .card-footer {
     height: 153px;
     width: 100%;
-    padding: 38px 25px;
+    padding: 16px 25px;
     box-sizing: border-box;
     border: 1px solid $color-neutrals-300;
     border-radius: 0px 0px 24px 24px;
+}
+.icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    background: $color-brand-light;
+}
+.icon {
+    width: 32px;
+    height: 32px;
 }
 </style>

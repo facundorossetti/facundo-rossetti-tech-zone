@@ -1,11 +1,11 @@
 <template>
     <div :class="'snackbar-container' + (success ? ' well' : ' wrong')">
-        <div>
-            <v-icon>{{ success ? "mdi-thumb-up" : "mdi-alert-circle" }}</v-icon>
+        <div class="icon">
+            <img :src="require(`../assets/sprite/svg/icons/${icon}.svg`)" alt="">
         </div>
-        <div>{{ text }}</div>
-        <div>
-            <v-icon @click="$emit('clickClose')">mdi-close</v-icon>
+        <div class="text">{{ text }}</div>
+        <div class="icon">
+            <img src="../assets/sprite/svg/icons/cross-default.svg" alt="" @click="$emit('clickClose')">
         </div>
     </div>
 </template>
@@ -27,11 +27,22 @@ export default {
         text() {
             return this.success ? this.productName + 'redeemed successfully' : 'There was a problem with the transaction';
         },
+        icon() {
+            return this.success ? "system-success" : "system-error";
+        }
     }
 }
 </script>
 
 <style lang="scss" scoped>
+.icon {
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 .snackbar-container {
     display: flex;
     justify-content: space-evenly;
@@ -43,6 +54,9 @@ export default {
     height: 80px;
     border-radius: 12px;
     background-color: $color-neutrals-0;
+    .text {
+        color: $color-neutrals-600;
+    }
 }
 .well {
     border: 1px solid $color-green-default;

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="display: flex;">
         <select-filter label="All Products" :items="items" @select="console"></select-filter>
         <e-button-toggle :btns="btns" @select="console"></e-button-toggle>
         <e-pagination :max-pages="4" @change="console"></e-pagination>
@@ -9,6 +9,8 @@
             :text="text" 
             @click="clickProduct"
         ></product-card>
+        <div class="icon"></div>
+        <h1 class="testFont">TEST FONT</h1>
     </div>
 </template>
 
@@ -36,3 +38,19 @@ export default {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+.icon {
+    width: 50px;
+    height: 50px;
+    background-image: url("../assets/sprite/svg/icons/github-active.svg");
+}
+.testFont {
+    font-family: "Montserrat";
+    font-weight: 900;
+    letter-spacing: 0%;
+    font-size: 200px;
+    line-height: 160px;
+    text-transform: uppercase;
+}
+</style>

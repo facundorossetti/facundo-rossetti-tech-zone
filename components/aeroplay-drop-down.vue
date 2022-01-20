@@ -11,19 +11,27 @@
         </div>
         <transition name="fade">
             <div v-show="menu" class="menu-wrapper">
-                <div class="menu-header text-l1-default">
-                    Add Balance
+                <div class="menu-header" style="display: flex; justify-content: space-between; align-items: center;">
+                    <div class="text-l1-default">
+                        Add Balance
+                    </div>
+                    <history-drop-down :table-headers="tableHeaders" :table-items="tableItems"></history-drop-down>
                 </div>
                 <div class="menu-content">
-                    <div class="aerocard"></div>
+                    <div class="aerocard-container">
+                        <div class="aerocard"></div>
+                    </div>
                     <div class="toggle-wrapper">
                         <e-button-toggle :btns="btns" @select="changePoints"></e-button-toggle>
                     </div>
                     <div>
-                        <v-btn class="add-points-btn" :ripple="false" @click="addPoints">
-                            <icon :heigth="24" :width="24"></icon>
-                            <span class="__text text-l1-default">Add Points</span>
-                        </v-btn>
+                        <e-button
+                            class="add-points-btn"
+                            text="Add Points"
+                            prepend-svg-icon="aeropay-3"
+                            border-radius="24px"
+                            @click="addPoints"
+                        ></e-button>
                     </div>
                 </div>
             </div>
@@ -40,9 +48,16 @@ export default {
             menu: false,
             pointsToAdd: 5000,
             btns: [1000, 5000, 7500],
+            tableHeaders: [
+                { text: 'Product', align: 'start', value: 'name', width: '30%'},
+                { text: 'Category', align: 'start', value: 'category', width: '25%'},
+                { text: 'Date', align: 'start', value: 'createDate', width: '30%'},
+                { text: 'Cost', align: 'start', value: 'cost', width: '25%'},
+            ],
+            tableItems: [],
             headers: {
                 'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWU1NzBiNGEzMGFiYjAwMWE5NDExY2QiLCJpYXQiOjE2NDI0MjY1NDh9.H-F16vO3pn1zo5exccyNIvsA74sgV87egCdmUUUKNcU'
-            }
+            },
         }
     },
     computed: {
@@ -51,12 +66,14 @@ export default {
         },
     },
     async beforeMount() {
-        await this.$axios
-        .get('https://coding-challenge-api.aerolab.co/user/me', {headers: this.headers})
-        .then(response => {
-            this.$store.commit('user/setPoints', response.data.points);
+        const user = (await this.$axios.get('https://coding-challenge-api.aerolab.co/user/me', 
+        { headers: this.headers })).data;
+        this.$store.commit('user/setPoints', user.points);
+        this.tableItems = user.redeemHistory;
+        this.tableItems.forEach((e) => {
+            e.createDate = new Date(e.createDate).toLocaleString();
+            e.cost = this.numberWithCommas(e.cost);
         })
-        .catch(error => error.response.data)
     },
     methods: {
         changePoints(e) {
@@ -123,11 +140,22 @@ export default {
 .menu-content {
     padding: 24px;
 }
-.aerocard {
+.aerocard-container {
+    display: flex;
+    align-items: flex-end;
     width: 264px;
     height: 148px;
     border-radius: 8px;
-    background: #252F3D;
+    background-color: #252F3D;
+}
+.aerocard {
+    width: 264px;
+    height: 80px;
+    border-radius: 8px;
+    background-color: #252F3D;
+    background-image: url("../assets/illustrations/single-wave-pattern.svg");
+    background-size: contain;
+    background-repeat: repeat;
 }
 .toggle-wrapper {
     margin: 40px auto 24px;
@@ -145,12 +173,5 @@ export default {
 .add-points-btn {
     height: 51px;
     width: 100% !important;
-    text-transform: capitalize !important;
-    border-radius: 12px !important;
-    background: $color-brand-default !important;
-    .__text {
-        padding-left: 8px;
-        color: $color-neutrals-0 !important;
-    }
 }
 </style>

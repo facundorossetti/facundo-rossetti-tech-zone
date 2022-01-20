@@ -4,6 +4,7 @@
             <v-btn 
                 v-for="(btn, index) in btns" :key="index"
                 class="toggle-button"
+                :ripple="false"
                 @click="btnClicked(btn)"
                 >{{ btn }}
             </v-btn >

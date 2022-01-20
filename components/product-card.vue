@@ -8,11 +8,12 @@
             </div>
         </div>
         <e-button 
-            :disabled="disabledBtn" 
-            :text="text" 
-            class="mt-auto" 
-            height="51px" 
-            :show-apend-icon="showApendIcon" 
+            :disabled="disabledBtn"
+            :text="text"
+            class="mt-auto"
+            apend-svg-icon="aeropay-2"
+            height="51px"
+            :show-apend-icon="showApendIcon"
             :product-value="productValue"
             @click="$emit('click')">
         </e-button>
@@ -44,8 +45,8 @@ export default {
             default: false,
         },
         productValue: {
-            type: Number,
-            default: 0,
+            type: String,
+            default: "0",
         },
         showApendIcon: {
             type: Boolean,
