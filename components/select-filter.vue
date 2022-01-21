@@ -80,6 +80,24 @@ export default {
         padding: 8px 0;
         border: 1px solid $color-neutrals-300;
         border-radius: 16px;
+        &::-webkit-scrollbar {
+            width: 8px;
+        }
+        &::-webkit-scrollbar-track {
+            background: transparent !important;
+        }
+        &::-webkit-scrollbar-thumb {
+            background: $color-illustration-bg;
+            border-radius: 12px;
+        }
+        &::-webkit-scrollbar-track-piece:end {
+            background: transparent;
+            margin-bottom: 10px; 
+        }
+        &::-webkit-scrollbar-track-piece:start {
+            background: transparent;
+            margin-top: 10px;
+        }
         .menu-options {
             display: flex;
             justify-content: flex-start;

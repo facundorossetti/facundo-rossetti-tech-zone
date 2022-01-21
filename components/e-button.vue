@@ -74,11 +74,13 @@ export default {
     },
     methods: {
         click() {
-            this.$emit('click');
-            this.processing = true;
-            setTimeout(() => {
-                this.processing = false;
-            }, 700);
+            if(!this.disabled) {
+                this.$emit('click');
+                this.processing = true;
+                setTimeout(() => {
+                    this.processing = false;
+                }, 700);
+            }
         }
     }
 }

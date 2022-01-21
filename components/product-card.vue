@@ -12,7 +12,7 @@
             :text="text"
             class="mt-auto"
             :processing="processing"
-            apend-svg-icon="aeropay-2"
+            :apend-svg-icon="disabledBtn ? 'aeropay-2' :'aeropay-3'"
             height="51px"
             :show-apend-icon="showApendIcon"
             :product-value="productValue"
