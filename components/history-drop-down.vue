@@ -37,45 +37,13 @@ export default {
     },
     data() {
         return {
-            toggle_button: 1,
             dialog: false,
-            pointsToAdd: 5000,
-            btns: [1000, 5000, 7500],
-            headers: {
-                'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWU1NzBiNGEzMGFiYjAwMWE5NDExY2QiLCJpYXQiOjE2NDI0MjY1NDh9.H-F16vO3pn1zo5exccyNIvsA74sgV87egCdmUUUKNcU'
-            },
         }
     },
-    computed: {
-        points() {
-            return this.numberWithCommas(this.$store.state.user.points);
-        },
-    },
-    methods: {
-        changePoints(e) {
-            this.pointsToAdd = e;
-        },
-        async addPoints() {
-            await this.$axios
-                .post('https://coding-challenge-api.aerolab.co/user/points', {'amount': this.pointsToAdd},
-                { headers: this.headers })
-                .then(response => this.$store.commit('user/setPoints', response.data['New Points']))
-                .catch(error => error.response.data);
-        },
-        numberWithCommas(number) {
-            return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-        },
-    }
 }
 </script>
 
 <style lang="scss" scoped>
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
-}
-.fade-enter, .fade-leave-to {
-  opacity: 0;
-}
 .v-dialog {
     max-width: 900px !important;
 }
@@ -106,58 +74,6 @@ export default {
 .component-container {
     position: relative;
     z-index: 10;
-}
-.menu-wrapper {
-    position: absolute;
-    z-index: 10;
-    height: 404px;
-    width: 312px;
-    margin-top: 8px;
-    right: 0;
-    border: 1px solid #DAE4F2;
-    background: $color-neutrals-0;
-    border-radius: 16px;
-    .menu-header {
-        padding: 16px 24px;
-        border-bottom: 1px solid #DAE4F2;
-    }
-}
-.menu-content {
-    padding: 24px;
-}
-.aerocard-container {
-    display: flex;
-    align-items: flex-end;
-    width: 264px;
-    height: 148px;
-    border-radius: 8px;
-    background-color: #252F3D;
-}
-.aerocard {
-    width: 264px;
-    height: 80px;
-    border-radius: 8px;
-    background-color: #252F3D;
-    background-image: url("../assets/illustrations/single-wave-pattern.svg");
-    background-size: contain;
-    background-repeat: repeat;
-}
-.toggle-wrapper {
-    margin: 40px auto 24px;
-}
-.toggle-button {
-    width: 45%;
-    height: 35px;
-    border-radius: 12px !important;
-    background-color: #E6F0FF !important;
-}
-::v-deep .v-btn--active {
-    color: $color-neutrals-100 !important;
-    background: $color-brand-default !important;
-}
-.add-points-btn {
-    height: 51px;
-    width: 100% !important;
 }
 .icon {
     width: 20px;
@@ -200,10 +116,18 @@ export default {
     overflow-y: auto !important;
 }
 ::v-deep tbody tr td {
+    font-family: arial;
+    font-family: arial;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    font-size: 18px;
+    line-height: 150%;
     color: $color-neutrals-600 !important;
 }
 ::v-deep th span {
     font-size: 20px;
+    font-family: arial;
+    font-weight: 600;
 }
 ::v-deep th .v-icon {
     margin-left: 5px !important;

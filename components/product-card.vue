@@ -11,6 +11,7 @@
             :disabled="disabledBtn"
             :text="text"
             class="mt-auto"
+            :processing="processing"
             apend-svg-icon="aeropay-2"
             height="51px"
             :show-apend-icon="showApendIcon"
@@ -46,7 +47,11 @@ export default {
         },
         productValue: {
             type: String,
-            default: "0",
+            default: null,
+        },
+        processing: {
+            type: Boolean,
+            default: false,
         },
         showApendIcon: {
             type: Boolean,

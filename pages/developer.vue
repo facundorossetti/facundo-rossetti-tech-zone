@@ -10,7 +10,7 @@
             @click="clickProduct"
         ></product-card>
         <div class="icon"></div>
-        <h1 class="testFont">TEST FONT</h1>
+        <h1 class="testFont">TECH ZONE</h1>
     </div>
 </template>
 
@@ -46,10 +46,11 @@ export default {
     background-image: url("../assets/sprite/svg/icons/github-active.svg");
 }
 .testFont {
-    font-family: "Montserrat";
+    font-family: sans-serif;
     font-weight: 900;
     letter-spacing: 0%;
     font-size: 200px;
+    font-style: normal;
     line-height: 160px;
     text-transform: uppercase;
 }

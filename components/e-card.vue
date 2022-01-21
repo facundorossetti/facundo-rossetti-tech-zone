@@ -10,7 +10,7 @@
                 </div>
                 <span class="title-l3-default brand-default-color-text pl-4">{{ title }}</span>
             </div>
-            <div class="text-l1-default neutrals-600-color-text">
+            <div class="text-l1-default neutrals-600-color-text description">
                 <p>{{ description }}</p>
             </div>
         </div>
@@ -82,5 +82,8 @@ export default {
 .icon {
     width: 32px;
     height: 32px;
+}
+.description {
+    max-width: 90%;
 }
 </style>

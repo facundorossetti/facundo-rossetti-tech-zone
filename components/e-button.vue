@@ -1,14 +1,13 @@
 <template>
-    <v-btn :class="disabled ? 'btnDisabled' : 'btn'" :ripple="false" :style="style" @click="$emit('click')">
-        <div v-if="prependSvgIcon">
+    <v-btn :class="disabled ? 'btnDisabled' : 'btn'" :ripple="false" :style="style" @click="click">
+        <div v-if="prependSvgIcon && !processing">
             <img class="icon" :src="require(`../assets/sprite/svg/icons/${prependSvgIcon}.svg`)" alt="">
         </div>
-        <span class="__text text-l1-default">{{ text }}</span>
-        <v-icon v-show="apendIcon" :heigth="24" :width="24" :color="apendIconColor">{{ apendIcon }}</v-icon>
-        <div v-if="apendSvgIcon">
+        <span class="__text text-l1-default">{{ processing && !blockProcessing ? "Processing..." : text }}</span>
+        <div v-if="apendSvgIcon && !processing">
             <img class="icon" :src="require(`../assets/sprite/svg/icons/${apendSvgIcon}.svg`)" alt="">
         </div>
-        <span v-show="productValue" class="__text text-l1-default">{{ productValue }}</span>
+        <span v-show="productValue && !processing" class="__text text-l1-default">{{ productValue }}</span>
     </v-btn>
 </template>
 
@@ -28,17 +27,13 @@ export default {
             type: String,
             default: null,
         },
-        apendIcon: {
-            type: String,
-            default: null,
-        },
         apendSvgIcon: {
             type: String,
             default: null,
         },
-        apendIconColor: {
-            type: String,
-            default: null,
+        blockProcessing: {
+            type: Boolean,
+            default: false,
         },
         disabled: {
             type: Boolean,
@@ -57,6 +52,11 @@ export default {
             default: "",
         },
     },
+    data() {
+        return {
+            processing: false,
+        }
+    },
     computed: {
         style() {
             const style = {};
@@ -71,6 +71,15 @@ export default {
             }
             return style;
         },
+    },
+    methods: {
+        click() {
+            this.$emit('click');
+            this.processing = true;
+            setTimeout(() => {
+                this.processing = false;
+            }, 700);
+        }
     }
 }
 </script>

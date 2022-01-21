@@ -3,7 +3,7 @@
         <div class="button" @click="menu = !menu">
             <div>
                 <icon :heigth="32" :width="32"></icon>
-                <span class="text pl-1 text-l1-default brand-default-color-text">{{ points }}</span>
+                <span class="pl-1 text-l1-default brand-default-color-text">{{ points }}</span>
             </div>
             <div>
                 <v-icon class="chevron-down">{{ menu ? "mdi-chevron-down" : "mdi-chevron-up" }}</v-icon>
@@ -19,7 +19,8 @@
                 </div>
                 <div class="menu-content">
                     <div class="aerocard-container">
-                        <div class="aerocard"></div>
+                        <div class="aerocard">
+                        </div>
                     </div>
                     <div class="toggle-wrapper">
                         <e-button-toggle :btns="btns" @select="changePoints"></e-button-toggle>

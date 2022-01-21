@@ -20,6 +20,7 @@
             apend-icon="mdi-arrow-down"
             apend-icon-color="#FFFFFF"
             width="318px"
+            block-processing
             height="80px"
             border-radius="24px"
             @click="goto('products')"
@@ -73,15 +74,11 @@
             <span class="pr-4">Sort by:</span>
             <e-button-toggle :btns="btns" :default-position="0" @select="sortBy" ></e-button-toggle>
           </div>
-          <e-pagination
-            class="ml-auto"
-            :max-pages="filteredProducts.length < 16 ? 1 : 2"
-            @change="changePage"
-          ></e-pagination>
+          <e-pagination class="ml-auto" :max-pages="maxPages" :current-page="currentPage" @changeToNext="changeToNext" @changeToPrevious="changeToPrevious"></e-pagination>
         </div>
         <v-row no-gutters class="products-container">
           <div
-            v-for="(product, index) in (page === 1 ? filteredProducts.slice(0, 16) : filteredProducts.slice(16, 32))"
+            v-for="(product, index) in (currentPage === 1 ? filteredProducts.slice(0, 16) : filteredProducts.slice(16, 32))"
             :key="index"
             class="pb-16"
           >
@@ -103,7 +100,7 @@
               <span class="text-l1-default brand-default-color-text pr-2">{{ filteredProducts.length > 16 ? 16: filteredProducts.length}} of {{ filteredProducts.length }}</span>
               <span class="text-l1-default neutrals-600-color-text">products</span>
             </div>
-            <e-pagination :max-pages="filteredProducts.length < 16 ? 1 : 2" @change="changePage"></e-pagination>
+            <e-pagination :max-pages="maxPages" :current-page="currentPage" @changeToNext="changeToNext" @changeToPrevious="changeToPrevious"></e-pagination>
           </div>
         </div>
         <e-snackbar
@@ -121,7 +118,7 @@ export default {
   name: 'IndexPage',
   data() {
     return {
-      page: 1,
+      currentPage: 1,
       categories: ["All Products"],
       btns: ["Most Recent", "Lowest Price", "Highest Price"],
       showIcon: true,
@@ -144,6 +141,9 @@ export default {
         return this.products;
       }
     },
+    maxPages() {
+      return this.filteredProducts.length < 16 ? 1 : 2;
+    }
   },
   async beforeMount() {
     this.products = (await this.$axios.get('https://coding-challenge-api.aerolab.co/products', 
@@ -181,8 +181,11 @@ export default {
         this.products.sort((a, b) => parseFloat(b.cost) - parseFloat(a.cost));
       }
     },
-    changePage(e) {
-      this.page = e;
+    changeToNext() {
+      this.currentPage += 1;
+    },
+    changeToPrevious() {
+      this.currentPage -= 1;
     },
     goto(element) {
         this.$router.replace({ name: this.$route.name, hash: `#${element}` });

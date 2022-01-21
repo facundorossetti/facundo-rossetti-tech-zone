@@ -30,7 +30,9 @@ export default {
     '@nuxtjs/eslint-module',
     '@nuxtjs/stylelint-module',
     '@nuxtjs/vuetify',
+    '@nuxtjs/google-fonts',
   ],
+
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
@@ -40,6 +42,19 @@ export default {
 
   svgSprite: {
     input: "~/assets/sprite/svg/",
+  },
+
+  googleFonts: {
+    families: {
+      Roboto: true,
+      Montserrat: true,
+      'Josefin+Sans': true,
+      Lato: [100, 300],
+      Raleway: {
+        wght: [100, 400],
+        ital: [100]
+      },
+    }
   },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios

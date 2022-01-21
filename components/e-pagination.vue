@@ -20,24 +20,21 @@ export default {
         maxPages: {
             type: Number,
             default: 1,
-        }
-    },
-    data() {
-        return {
-            currentPage: 1,
+        },
+        currentPage: {
+            type: Number,
+            default: 1,
         }
     },
     methods: {
         nextPage() {
             if(this.currentPage < this.maxPages) {
-                this.currentPage += 1;
-                this.$emit("change", this.currentPage);
+                this.$emit("changeToNext");
             }
         },
         previousPage() {
             if(this.currentPage > 1) {
-                this.currentPage -= 1;
-                this.$emit("change", this.currentPage);
+                this.$emit("changeToPrevious");
             }
         }
     }
